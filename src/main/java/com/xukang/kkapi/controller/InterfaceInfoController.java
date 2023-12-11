@@ -11,24 +11,24 @@ import com.xukang.kkapi.constant.UserConstant;
 import com.xukang.kkapi.exception.BusinessException;
 import com.xukang.kkapi.exception.ThrowUtils;
 
-import com.xukang.kkapi.model.dto.interfaceinfo.InterfaceInfoAddRequest;
-import com.xukang.kkapi.model.dto.interfaceinfo.InterfaceInfoEditRequest;
-import com.xukang.kkapi.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
-import com.xukang.kkapi.model.dto.interfaceinfo.InterfaceInfoUpdateRequest;
+import com.xukang.kkapi.model.dto.interfaceinfo.*;
 import com.xukang.kkapi.model.entity.InterfaceInfo;
 import com.xukang.kkapi.model.entity.User;
+import com.xukang.kkapi.model.enums.InterfaceStatusEnum;
 import com.xukang.kkapi.service.InterfaceInfoService;
 import com.xukang.kkapi.service.UserService;
+import com.xukang.kkapiclientsdk.clinet.KkApiClient;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
+
 
 /**
- * 帖子接口
+ * 接口管理
  */
 @RestController
 @RequestMapping("/interfaceInfo")
@@ -41,9 +41,74 @@ public class InterfaceInfoController {
     @Resource
     private UserService userService;
 
+    @Resource
+    private KkApiClient kkApiClient;
+
     private final static Gson GSON = new Gson();
 
-    // region 增删改查
+    /**
+     * 发布接口（仅管理员）
+     *
+     * @param idRequest
+     * @return
+     */
+    @PostMapping("/online")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> onlineInterfaceInfo(@RequestBody IdRequest idRequest) {
+        Long id = idRequest.getId();
+        if (id == null || id < 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        //接口是否存在
+        InterfaceInfo interfaceInfo = interfaceInfoService.getById(id);
+        if (interfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        // 接口是否可以调用
+        com.xukang.kkapiclientsdk.moodel.User user = new com.xukang.kkapiclientsdk.moodel.User();
+        user.setName("接口正常");
+        // todo  这里的接口为测试接口 都可以通过
+        String nameByRest = kkApiClient.getNameByRest(user);
+        if (StringUtils.isBlank(nameByRest)) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口异常");
+        }
+        //   修改接口状态为上线
+        interfaceInfo.setId(id);
+        interfaceInfo.setStatus(InterfaceStatusEnum.ONLINE.getValue());
+        return ResultUtils.success(interfaceInfoService.updateById(interfaceInfo));
+    }
+
+    /**
+     * 下线接口（仅管理员）
+     *
+     * @param idRequest
+     * @return
+     */
+    @PostMapping("/offline")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> offlineInterfaceInfo(@RequestBody IdRequest idRequest) {
+        Long id = idRequest.getId();
+        if (id == null || id < 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        //接口是否存在
+        InterfaceInfo interfaceInfo = interfaceInfoService.getById(id);
+        if (interfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        // 接口是否可以调用
+        com.xukang.kkapiclientsdk.moodel.User user = new com.xukang.kkapiclientsdk.moodel.User();
+        user.setName("接口正常");
+        // todo  这里的接口为测试接口 都可以通过
+        String nameByRest = kkApiClient.getNameByRest(user);
+        if (StringUtils.isBlank(nameByRest)) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口异常");
+        }
+        //   修改接口状态为上线
+        interfaceInfo.setId(id);
+        interfaceInfo.setStatus(InterfaceStatusEnum.OFFLINE.getValue());
+        return ResultUtils.success(interfaceInfoService.updateById(interfaceInfo));
+    }
 
     /**
      * 创建
@@ -123,7 +188,7 @@ public class InterfaceInfoController {
      * @param id
      * @return
      */
-    @GetMapping("/get/vo")
+    @GetMapping("/get")
     public BaseResponse<InterfaceInfo> getInterfaceInfoVOById(long id, HttpServletRequest request) {
         if (id <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
@@ -142,7 +207,7 @@ public class InterfaceInfoController {
      * @param request
      * @return
      */
-    @PostMapping("/list/page/vo")
+    @PostMapping("/list/page")
     public BaseResponse<Page<InterfaceInfo>> listInterfaceInfoVOByPage(@RequestBody InterfaceInfoQueryRequest interfaceInfoQueryRequest,
                                                                        HttpServletRequest request) {
         long current = interfaceInfoQueryRequest.getCurrent();

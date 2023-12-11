@@ -63,6 +63,7 @@ public class InterfaceInfo implements Serializable {
     /**
      * 创建人
      */
+    @TableField(exist = false)
     private UserVO User;
 
     /**

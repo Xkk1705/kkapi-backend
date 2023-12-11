@@ -4,12 +4,8 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.xukang.kkapi.config.WxOpenConfig;
-
-import javax.annotation.Resource;
 
 import com.xukang.kkapi.model.entity.Post;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -22,13 +18,13 @@ import java.util.Map;
 @SpringBootTest
 class MainApplicationTests {
 
-    @Resource
-    private WxOpenConfig wxOpenConfig;
+//    @Resource
+//    private WxOpenConfig ;
 
-    @Test
-    void contextLoads() {
-        System.out.println(wxOpenConfig);
-    }
+//    @Test
+//    void contextLoads() {
+//        System.out.println(wxOpenConfig);
+//    }
 
     @Test
     void getPost() {

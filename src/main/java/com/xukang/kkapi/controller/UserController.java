@@ -8,7 +8,6 @@ import com.xukang.kkapi.common.BaseResponse;
 import com.xukang.kkapi.common.DeleteRequest;
 import com.xukang.kkapi.common.ErrorCode;
 import com.xukang.kkapi.common.ResultUtils;
-import com.xukang.kkapi.config.WxOpenConfig;
 import com.xukang.kkapi.constant.UserConstant;
 import com.xukang.kkapi.exception.BusinessException;
 import com.xukang.kkapi.exception.ThrowUtils;
@@ -50,8 +49,8 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @Resource
-    private WxOpenConfig wxOpenConfig;
+//    @Resource
+//    private WxOpenConfig wxOpenConfig;
 
     // region 登录相关
 
@@ -100,25 +99,25 @@ public class UserController {
     /**
      * 用户登录（微信开放平台）
      */
-    @GetMapping("/login/wx_open")
-    public BaseResponse<LoginUserVO> userLoginByWxOpen(HttpServletRequest request, HttpServletResponse response,
-                                                       @RequestParam("code") String code) {
-        WxOAuth2AccessToken accessToken;
-        try {
-            WxMpService wxService = wxOpenConfig.getWxMpService();
-            accessToken = wxService.getOAuth2Service().getAccessToken(code);
-            WxOAuth2UserInfo userInfo = wxService.getOAuth2Service().getUserInfo(accessToken, code);
-            String unionId = userInfo.getUnionId();
-            String mpOpenId = userInfo.getOpenid();
-            if (StringUtils.isAnyBlank(unionId, mpOpenId)) {
-                throw new BusinessException(ErrorCode.SYSTEM_ERROR, "登录失败，系统错误");
-            }
-            return ResultUtils.success(userService.userLoginByMpOpen(userInfo, request));
-        } catch (Exception e) {
-            log.error("userLoginByWxOpen error", e);
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "登录失败，系统错误");
-        }
-    }
+//    @GetMapping("/login/wx_open")
+//    public BaseResponse<LoginUserVO> userLoginByWxOpen(HttpServletRequest request, HttpServletResponse response,
+//                                                       @RequestParam("code") String code) {
+//        WxOAuth2AccessToken accessToken;
+//        try {
+//            WxMpService wxService = wxOpenConfig.getWxMpService();
+//            accessToken = wxService.getOAuth2Service().getAccessToken(code);
+//            WxOAuth2UserInfo userInfo = wxService.getOAuth2Service().getUserInfo(accessToken, code);
+//            String unionId = userInfo.getUnionId();
+//            String mpOpenId = userInfo.getOpenid();
+//            if (StringUtils.isAnyBlank(unionId, mpOpenId)) {
+//                throw new BusinessException(ErrorCode.SYSTEM_ERROR, "登录失败，系统错误");
+//            }
+//            return ResultUtils.success(userService.userLoginByMpOpen(userInfo, request));
+//        } catch (Exception e) {
+//            log.error("userLoginByWxOpen error", e);
+//            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "登录失败，系统错误");
+//        }
+//    }
 
     /**
      * 用户注销

@@ -89,3 +89,8 @@ cos:
     secretKey: xxx
     region: xxx
     bucket: xxx
+# KkApiClient 客户端签名
+kk:
+  client:
+    access-kye: xukang
+    secret-key: xukang
