@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 
 /**
@@ -45,6 +46,46 @@ public class InterfaceInfoController {
     private KkApiClient kkApiClient;
 
     private final static Gson GSON = new Gson();
+
+
+    /**
+     * 调用（测试）模拟接口getNameByRest
+     *
+     * @param userInvokeRequest
+     * @param request
+     * @return
+     */
+    @PostMapping("/invoke")
+    public BaseResponse<String> invokeInterfaceInfo(@RequestBody UserInvokeRequest userInvokeRequest, HttpServletRequest request) {
+        if (userInvokeRequest == null || userInvokeRequest.getId() <= 0) {
+            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+        }
+        Long id = userInvokeRequest.getId();
+        //接口是否存在
+        InterfaceInfo interfaceInfo = interfaceInfoService.getById(id);
+        if (interfaceInfo == null) {
+            throw new BusinessException(ErrorCode.NOT_FOUND_ERROR);
+        }
+        // 判断接口状态是否开启
+        Integer interfaceInfoStatus = interfaceInfo.getStatus();
+        if (Objects.equals(InterfaceStatusEnum.OFFLINE.getValue(), interfaceInfoStatus)) {
+            throw new BusinessException(ErrorCode.NO_AUTH_ERROR, "该接口未开启");
+        }
+        // 校验用户ack sk
+        User loginUser = userService.getLoginUser(request);
+        String secretKye = loginUser.getSecretKye();
+        String accessKye = loginUser.getAccessKye();
+        KkApiClient kkApiClient = new KkApiClient(accessKye, secretKye);
+        // 接口是否可以调用
+        com.xukang.kkapiclientsdk.moodel.User user = GSON.fromJson(userInvokeRequest.getRequestParams(), com.xukang.kkapiclientsdk.moodel.User.class);
+        // todo 这里调用的接口不是数据库中的url 后期修改
+        String nameByRest = kkApiClient.getNameByRest(user);
+        if (StringUtils.isBlank(nameByRest)) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口异常");
+        }
+        return ResultUtils.success(nameByRest);
+    }
+
 
     /**
      * 发布接口（仅管理员）

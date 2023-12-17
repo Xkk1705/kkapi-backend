@@ -31,6 +31,7 @@ import me.chanjar.weixin.common.bean.oauth2.WxOAuth2AccessToken;
 import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -68,10 +69,17 @@ public class UserController {
         String userAccount = userRegisterRequest.getUserAccount();
         String userPassword = userRegisterRequest.getUserPassword();
         String checkPassword = userRegisterRequest.getCheckPassword();
-        if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword)) {
+        String userRole = userRegisterRequest.getUserRole();
+
+        if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword,userRole)) {
             return null;
         }
-        long result = userService.userRegister(userAccount, userPassword, checkPassword);
+        UserAddRequest userAddRequest = new UserAddRequest();
+        userAddRequest.setUserAccount(userAccount);
+        userAddRequest.setUserPassword(userPassword);
+        userAddRequest.setCheckPassword(checkPassword);
+        userAddRequest.setUserRole(userRole);
+        long result = userService.userRegister(userAddRequest);
         return ResultUtils.success(result);
     }
 
@@ -150,25 +158,6 @@ public class UserController {
 
     // region 增删改查
 
-    /**
-     * 创建用户
-     *
-     * @param userAddRequest
-     * @param request
-     * @return
-     */
-    @PostMapping("/add")
-    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Long> addUser(@RequestBody UserAddRequest userAddRequest, HttpServletRequest request) {
-        if (userAddRequest == null) {
-            throw new BusinessException(ErrorCode.PARAMS_ERROR);
-        }
-        User user = new User();
-        BeanUtils.copyProperties(userAddRequest, user);
-        boolean result = userService.save(user);
-        ThrowUtils.throwIf(!result, ErrorCode.OPERATION_ERROR);
-        return ResultUtils.success(user.getId());
-    }
 
     /**
      * 删除用户

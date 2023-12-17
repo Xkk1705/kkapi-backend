@@ -2,6 +2,7 @@ package com.xukang.kkapi.service;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.xukang.kkapi.model.dto.user.UserAddRequest;
 import com.xukang.kkapi.model.vo.LoginUserVO;
 import com.xukang.kkapi.model.vo.UserVO;
 import com.xukang.kkapi.model.dto.user.UserQueryRequest;
@@ -20,12 +21,14 @@ public interface UserService extends IService<User> {
     /**
      * 用户注册
      *
-     * @param userAccount   用户账户
-     * @param userPassword  用户密码
-     * @param checkPassword 校验密码
+     * @param userAddRequest 请求参数
      * @return 新用户 id
      */
-    long userRegister(String userAccount, String userPassword, String checkPassword);
+    long userRegister(UserAddRequest userAddRequest);
+
+
+
+    String getSign(String signValue);
 
     /**
      * 用户登录

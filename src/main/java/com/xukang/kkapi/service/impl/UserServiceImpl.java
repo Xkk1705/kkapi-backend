@@ -2,10 +2,14 @@ package com.xukang.kkapi.service.impl;
 
 import static com.xukang.kkapi.constant.UserConstant.USER_LOGIN_STATE;
 
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.crypto.digest.DigestAlgorithm;
+import cn.hutool.crypto.digest.Digester;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.xukang.kkapi.exception.BusinessException;
+import com.xukang.kkapi.model.dto.user.UserAddRequest;
 import com.xukang.kkapi.model.vo.LoginUserVO;
 import com.xukang.kkapi.model.vo.UserVO;
 import com.xukang.kkapi.common.ErrorCode;
@@ -42,7 +46,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     private static final String SALT = "xukang";
 
     @Override
-    public long userRegister(String userAccount, String userPassword, String checkPassword) {
+    public long userRegister(UserAddRequest userAddRequest) {
+        String userAccount = userAddRequest.getUserAccount();
+        String userPassword = userAddRequest.getUserPassword();
+        String checkPassword = userAddRequest.getCheckPassword();
+        String userRole = userAddRequest.getUserRole();
         // 1. 校验
         if (StringUtils.isAnyBlank(userAccount, userPassword, checkPassword)) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR, "参数为空");
@@ -71,12 +79,29 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             User user = new User();
             user.setUserAccount(userAccount);
             user.setUserPassword(encryptPassword);
+            String assessKye = getSign(userAccount);
+            String secretKye = getSign(encryptPassword);
+            user.setAccessKye(assessKye);
+            user.setSecretKye(secretKye);
+            user.setUserRole(userRole);
             boolean saveResult = this.save(user);
             if (!saveResult) {
                 throw new BusinessException(ErrorCode.SYSTEM_ERROR, "注册失败，数据库错误");
             }
             return user.getId();
         }
+    }
+
+    /**
+     * 返回需要解密的数据
+     *
+     * @param signValue 需要加密的字符串
+     * @return
+     */
+    @Override
+    public String getSign(String signValue) {
+        Digester md5 = new Digester(DigestAlgorithm.MD5);
+        return md5.digestHex(SALT + signValue + RandomUtil.randomNumbers(4));
     }
 
     @Override
