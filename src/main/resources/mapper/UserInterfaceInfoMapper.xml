@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xukang.kkapi.mapper.UserInterfaceInfoMapper">
 
-    <resultMap id="BaseResultMap" type="com.xukang.kkapi.model.entity.UserInterfaceInfo">
+    <resultMap id="BaseResultMap" type="com.xukang.kkapicommmon.entity.UserInterfaceInfo">
             <id property="id" column="id" jdbcType="BIGINT"/>
             <result property="useId" column="useId" jdbcType="BIGINT"/>
             <result property="interfaceInfoId" column="interfaceInfoId" jdbcType="BIGINT"/>
@@ -21,4 +21,10 @@
         totalNum,leftNum,status,
         createTime,updateTime,isDelete
     </sql>
+    <select id="getInvokeCount" resultType="com.xukang.kkapicommmon.entity.UserInterfaceInfo">
+        select interfaceInfoId, sum(user_interface_info.totalNum) as totalNum
+        from user_interface_info
+        group by user_interface_info.interfaceInfoId
+        order by totalNum desc limit #{limit}
+    </select>
 </mapper>

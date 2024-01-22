@@ -1,6 +1,6 @@
 package com.xukang.kkapi.service;
 
-import com.xukang.kkapi.model.entity.UserInterfaceInfo;
+import com.xukang.kkapicommmon.entity.UserInterfaceInfo;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

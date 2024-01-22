@@ -2,7 +2,7 @@ package com.xukang.kkapi.service;
 
 import com.xukang.kkapi.model.entity.PostThumb;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.xukang.kkapi.model.entity.User;
+import com.xukang.kkapicommmon.entity.User;
 
 /**
  * 帖子点赞服务

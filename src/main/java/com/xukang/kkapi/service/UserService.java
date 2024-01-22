@@ -4,13 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xukang.kkapi.model.dto.user.UserAddRequest;
 import com.xukang.kkapi.model.vo.LoginUserVO;
-import com.xukang.kkapi.model.vo.UserVO;
 import com.xukang.kkapi.model.dto.user.UserQueryRequest;
-import com.xukang.kkapi.model.entity.User;
 
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
+import com.xukang.kkapicommmon.entity.User;
+import com.xukang.kkapicommmon.entity.vo.UserVO;
 import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
 
 /**

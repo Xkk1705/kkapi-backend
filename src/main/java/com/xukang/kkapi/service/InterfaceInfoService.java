@@ -5,13 +5,15 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.xukang.kkapi.model.dto.interfaceinfo.InterfaceInfoQueryRequest;
-import com.xukang.kkapi.model.entity.InterfaceInfo;
+import com.xukang.kkapicommmon.entity.InterfaceInfo;
+import org.apache.ibatis.annotations.Mapper;
 
 import javax.servlet.http.HttpServletRequest;
 
 /**
  *
  */
+@Mapper
 public interface InterfaceInfoService extends IService<InterfaceInfo> {
 
     /**

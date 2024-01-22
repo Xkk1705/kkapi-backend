@@ -1,18 +1,23 @@
 package com.xukang.kkapi.service.impl;
 
-import java.util.Date;
-
-import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.xukang.kkapi.annotation.AuthCheck;
 import com.xukang.kkapi.common.ErrorCode;
 import com.xukang.kkapi.exception.BusinessException;
 import com.xukang.kkapi.exception.ThrowUtils;
-import com.xukang.kkapi.model.entity.InterfaceInfo;
-import com.xukang.kkapi.model.entity.UserInterfaceInfo;
+import com.xukang.kkapi.mapper.InterfaceInfoMapper;
+import com.xukang.kkapi.model.vo.UserInterfaceInfoVo;
 import com.xukang.kkapi.service.UserInterfaceInfoService;
 import com.xukang.kkapi.mapper.UserInterfaceInfoMapper;
-import org.apache.commons.lang3.StringUtils;
+import com.xukang.kkapicommmon.entity.InterfaceInfo;
+import com.xukang.kkapicommmon.entity.UserInterfaceInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -20,6 +25,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoMapper, UserInterfaceInfo>
         implements UserInterfaceInfoService {
+    @Resource
+    private UserInterfaceInfoMapper userInterfaceInfoMapper;
+    @Resource
+    private InterfaceInfoMapper interfaceInfoMapper;
 
     @Override
     public void validUserInterfaceInfo(UserInterfaceInfo userInterfaceInfo, boolean add) {
@@ -59,6 +68,23 @@ public class UserInterfaceInfoServiceImpl extends ServiceImpl<UserInterfaceInfoM
             oldUserInterfaceInfo.setLeftNum(leftNum - 1);
             return this.updateById(oldUserInterfaceInfo);
         }
+    }
+
+    @Override
+    @AuthCheck(mustRole = "admin")
+    public List<UserInterfaceInfoVo> getInvokeCount(Long limit) {
+        List<UserInterfaceInfo> totolNumAndInterfaceInfoIdList = userInterfaceInfoMapper.getInvokeCount(limit);
+        if (totolNumAndInterfaceInfoIdList.isEmpty()) {
+            throw new BusinessException(ErrorCode.SYSTEM_ERROR);
+        }
+        List<UserInterfaceInfoVo> userInterfaceInfoVos = totolNumAndInterfaceInfoIdList.stream().map(item -> {
+            InterfaceInfo interfaceInfo = interfaceInfoMapper.selectById(item.getInterfaceInfoId());
+            UserInterfaceInfoVo userInterfaceInfoVo = new UserInterfaceInfoVo();
+            BeanUtils.copyProperties(item, userInterfaceInfoVo);
+            userInterfaceInfoVo.setInterfaceInfoUrl(interfaceInfo.getUrl());
+            return userInterfaceInfoVo;
+        }).collect(Collectors.toList());
+        return userInterfaceInfoVos;
     }
 }
 

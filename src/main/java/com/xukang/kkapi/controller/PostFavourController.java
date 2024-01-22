@@ -11,7 +11,6 @@ import com.xukang.kkapi.model.dto.post.PostQueryRequest;
 import com.xukang.kkapi.model.dto.postfavour.PostFavourAddRequest;
 import com.xukang.kkapi.model.dto.postfavour.PostFavourQueryRequest;
 import com.xukang.kkapi.model.entity.Post;
-import com.xukang.kkapi.model.entity.User;
 import com.xukang.kkapi.service.PostFavourService;
 import com.xukang.kkapi.service.PostService;
 import com.xukang.kkapi.service.UserService;
@@ -19,6 +18,7 @@ import com.xukang.kkapi.service.UserService;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.xukang.kkapicommmon.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

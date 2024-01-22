@@ -5,13 +5,13 @@ import com.xukang.kkapi.common.ErrorCode;
 import com.xukang.kkapi.common.ResultUtils;
 import com.xukang.kkapi.exception.BusinessException;
 import com.xukang.kkapi.model.dto.postthumb.PostThumbAddRequest;
-import com.xukang.kkapi.model.entity.User;
 import com.xukang.kkapi.service.PostThumbService;
 import com.xukang.kkapi.service.UserService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.xukang.kkapicommmon.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

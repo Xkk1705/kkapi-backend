@@ -8,7 +8,6 @@ import com.xukang.kkapi.common.ErrorCode;
 import com.xukang.kkapi.common.ResultUtils;
 import com.xukang.kkapi.constant.FileConstant;
 import com.xukang.kkapi.manager.CosManager;
-import com.xukang.kkapi.model.entity.User;
 import com.xukang.kkapi.model.enums.FileUploadBizEnum;
 import com.xukang.kkapi.service.UserService;
 
@@ -17,6 +16,7 @@ import java.util.Arrays;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.xukang.kkapicommmon.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.web.bind.annotation.PostMapping;

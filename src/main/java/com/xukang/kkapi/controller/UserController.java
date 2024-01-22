@@ -2,7 +2,6 @@ package com.xukang.kkapi.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xukang.kkapi.model.vo.LoginUserVO;
-import com.xukang.kkapi.model.vo.UserVO;
 import com.xukang.kkapi.annotation.AuthCheck;
 import com.xukang.kkapi.common.BaseResponse;
 import com.xukang.kkapi.common.DeleteRequest;
@@ -17,26 +16,21 @@ import com.xukang.kkapi.model.dto.user.UserQueryRequest;
 import com.xukang.kkapi.model.dto.user.UserRegisterRequest;
 import com.xukang.kkapi.model.dto.user.UserUpdateMyRequest;
 import com.xukang.kkapi.model.dto.user.UserUpdateRequest;
-import com.xukang.kkapi.model.entity.User;
 import com.xukang.kkapi.service.UserService;
 
 import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
+import com.xukang.kkapicommmon.entity.User;
+import com.xukang.kkapicommmon.entity.vo.UserVO;
 import lombok.extern.slf4j.Slf4j;
-import me.chanjar.weixin.common.bean.WxOAuth2UserInfo;
-import me.chanjar.weixin.common.bean.oauth2.WxOAuth2AccessToken;
-import me.chanjar.weixin.mp.api.WxMpService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**

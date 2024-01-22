@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.xukang.kkapicommmon.entity.vo.UserVO;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 

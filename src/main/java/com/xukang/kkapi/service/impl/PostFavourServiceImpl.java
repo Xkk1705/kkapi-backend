@@ -10,12 +10,12 @@ import com.xukang.kkapi.common.ErrorCode;
 import com.xukang.kkapi.mapper.PostFavourMapper;
 import com.xukang.kkapi.model.entity.Post;
 import com.xukang.kkapi.model.entity.PostFavour;
-import com.xukang.kkapi.model.entity.User;
 import com.xukang.kkapi.service.PostFavourService;
 import com.xukang.kkapi.service.PostService;
 
 import javax.annotation.Resource;
 
+import com.xukang.kkapicommmon.entity.User;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

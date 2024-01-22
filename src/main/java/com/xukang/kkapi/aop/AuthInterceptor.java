@@ -3,13 +3,13 @@ package com.xukang.kkapi.aop;
 import com.xukang.kkapi.annotation.AuthCheck;
 import com.xukang.kkapi.common.ErrorCode;
 import com.xukang.kkapi.exception.BusinessException;
-import com.xukang.kkapi.model.entity.User;
 import com.xukang.kkapi.model.enums.UserRoleEnum;
 import com.xukang.kkapi.service.UserService;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.xukang.kkapicommmon.entity.User;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;

@@ -12,12 +12,12 @@ import com.xukang.kkapi.exception.BusinessException;
 import com.xukang.kkapi.exception.ThrowUtils;
 
 import com.xukang.kkapi.model.dto.interfaceinfo.*;
-import com.xukang.kkapi.model.entity.InterfaceInfo;
-import com.xukang.kkapi.model.entity.User;
 import com.xukang.kkapi.model.enums.InterfaceStatusEnum;
 import com.xukang.kkapi.service.InterfaceInfoService;
 import com.xukang.kkapi.service.UserService;
 import com.xukang.kkapiclientsdk.clinet.KkApiClient;
+import com.xukang.kkapicommmon.entity.InterfaceInfo;
+import com.xukang.kkapicommmon.entity.User;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -77,7 +77,7 @@ public class InterfaceInfoController {
         String accessKye = loginUser.getAccessKye();
         KkApiClient kkApiClient = new KkApiClient(accessKye, secretKye);
         // 接口是否可以调用
-        com.xukang.kkapiclientsdk.moodel.User user = GSON.fromJson(userInvokeRequest.getRequestParams(), com.xukang.kkapiclientsdk.moodel.User.class);
+        com.xukang.kkapiclientsdk.moodel.User user = GSON.fromJson(userInvokeRequest.getUserRequestParams(), com.xukang.kkapiclientsdk.moodel.User.class);
         // todo 这里调用的接口不是数据库中的url 后期修改
         String nameByRest = kkApiClient.getNameByRest(user);
         if (StringUtils.isBlank(nameByRest)) {
@@ -257,6 +257,19 @@ public class InterfaceInfoController {
         ThrowUtils.throwIf(size > 20, ErrorCode.PARAMS_ERROR);
         Page<InterfaceInfo> interfaceInfoPage = interfaceInfoService.page(new Page<>(current, size),
                 interfaceInfoService.getQueryWrapper(interfaceInfoQueryRequest));
+        return ResultUtils.success(interfaceInfoService.getInterfaceInfoVOPage(interfaceInfoPage, request));
+    }
+
+    /**
+     * 分页获取列表（封装类）
+     *
+     * @param request
+     * @return
+     */
+    @GetMapping("/list/page")//&current=1&pageSize=5
+    public BaseResponse<Page<InterfaceInfo>> listInterfaceInfoVOByPageGet(Long current, Long pageSize
+            , HttpServletRequest request) {
+        Page<InterfaceInfo> interfaceInfoPage = interfaceInfoService.page(new Page<>(current, pageSize));
         return ResultUtils.success(interfaceInfoService.getInterfaceInfoVOPage(interfaceInfoPage, request));
     }
 

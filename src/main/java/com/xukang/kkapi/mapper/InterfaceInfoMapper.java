@@ -1,8 +1,7 @@
 package com.xukang.kkapi.mapper;
 
-
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xukang.kkapi.model.entity.InterfaceInfo;
+import com.xukang.kkapicommmon.entity.InterfaceInfo;
 
 /**
  * @Entity com.xukang.kkapi.domain.InterfaceInfo

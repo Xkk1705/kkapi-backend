@@ -1,7 +1,7 @@
 package com.xukang.kkapi.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.xukang.kkapi.model.entity.User;
+import com.xukang.kkapicommmon.entity.User;
 
 /**
  * 用户数据库操作
