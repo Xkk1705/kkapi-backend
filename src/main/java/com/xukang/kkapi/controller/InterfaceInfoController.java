@@ -1,5 +1,6 @@
 package com.xukang.kkapi.controller;
 
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.gson.Gson;
 import com.xukang.kkapi.annotation.AuthCheck;
@@ -49,7 +50,7 @@ public class InterfaceInfoController {
 
 
     /**
-     * 调用（测试）模拟接口getNameByRest
+     * 调用接口getNameByRest
      *
      * @param userInvokeRequest
      * @param request
@@ -76,14 +77,15 @@ public class InterfaceInfoController {
         String secretKye = loginUser.getSecretKye();
         String accessKye = loginUser.getAccessKye();
         KkApiClient kkApiClient = new KkApiClient(accessKye, secretKye);
-        // 接口是否可以调用
+        // 调用接口
         com.xukang.kkapiclientsdk.moodel.User user = GSON.fromJson(userInvokeRequest.getUserRequestParams(), com.xukang.kkapiclientsdk.moodel.User.class);
-        // todo 这里调用的接口不是数据库中的url 后期修改
-        String nameByRest = kkApiClient.getNameByRest(user);
-        if (StringUtils.isBlank(nameByRest)) {
+        String url = interfaceInfo.getUrl();
+        String requestParams = userInvokeRequest.getUserRequestParams();
+        String result = kkApiClient.invokeApiByURL(url, requestParams);
+        if (StringUtils.isBlank(result)) {
             throw new BusinessException(ErrorCode.SYSTEM_ERROR, "接口异常");
         }
-        return ResultUtils.success(nameByRest);
+        return ResultUtils.success(result);
     }
 
 
