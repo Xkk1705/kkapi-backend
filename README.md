@@ -425,8 +425,9 @@ tyarn deploy
 ```
 
 **效果如下**
+![image](https://github.com/Xkk1705/kkapi-backend/assets/97894317/1d8d8654-04a8-4989-8938-f640fac089ef)
 
-![](http://dhx-blog.oss-cn-beijing.aliyuncs.com/dhx/image-20240102205802670.png)
+
 
 
 
