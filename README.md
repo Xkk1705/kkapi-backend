@@ -11,6 +11,7 @@
 | **item**         | **version**    |
 | ---------------- | -------------- |
 | **JDK**          | **17**         |
+
 | **SpringBoot**   | **2.7.9**      |
 | **SpringCloud**  | **2021.0.7.0** |
 | **Apache Dubbo** | **3.1.6**      |
@@ -345,7 +346,7 @@ public class RemoteTraceIdFilter implements Filter {
 2. 添加**trace_id** 用来定位每次调用接口 (同时可以通过日志设置trace_id 来进行**全链路日志追踪**)
 3. 添加 **call_back** 来存储用户对于每个接口的回调路径 . 
 
-![核心流程图](http://dhx-blog.oss-cn-beijing.aliyuncs.com/dhx/image-20240102202629563.png)
+![核心流程图]![image](https://github.com/Xkk1705/kkapi-backend/assets/97894317/0a8249f9-42b3-44a5-b8f3-b5b5842573e7)
 
 **call_result**
 
@@ -410,7 +411,8 @@ public class RemoteTraceIdFilter implements Filter {
 
 > 主打一个简单 , 高效 , 免费(baipiao)
 
-效果预览:  [https://turboapi-doc.dhx.icu/](https://turboapi-doc.dhx.icu/)
+效果预览:  ![image](https://github.com/Xkk1705/kkapi-backend/assets/97894317/0c835c92-3cba-41a0-af5e-6af3078ed7da)
+
 
 官方网站 : https://docusaurus.io/zh-CN/docs/category/guides
 
@@ -423,8 +425,9 @@ tyarn deploy
 ```
 
 **效果如下**
+![image](https://github.com/Xkk1705/kkapi-backend/assets/97894317/1d8d8654-04a8-4989-8938-f640fac089ef)
 
-![](http://dhx-blog.oss-cn-beijing.aliyuncs.com/dhx/image-20240102205802670.png)
+
 
 
 
@@ -548,5 +551,3 @@ V3InterfaceBenchmarkTest.locationSearchTest            avgt  100   5.837 ± 0.13
 
 
 ![](http://dhx-blog.oss-cn-beijing.aliyuncs.com/dhx/image-20240105205527341.png)
-
-
